@@ -1,0 +1,236 @@
+Problem Statement:Develop a Java application that connects to a MySQL/PostgreSQL. database to manage student information. Implement CRUD operations for student records using JDBC. Use prepared statements to handle SQL queries securely and ensure proper transaction management.
+
+
+package jdbc123;
+import java.sql.*;
+import java.util.Scanner;
+
+public class StudentManagement {
+
+    // Database connection details
+    static final String DB_URL = "jdbc:mysql://localhost:3306/school_db";
+    static final String USER = "root";      // your DB username
+    static final String PASS = "Pass";  // your DB password
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+
+            System.out.println("Connected to database successfully!");
+
+            int choice;
+
+            do {
+                System.out.println("\n----- Student Management System -----");
+                System.out.println("1. Add Student");
+                System.out.println("2. Update Student");
+                System.out.println("3. Delete Student");
+                System.out.println("4. View Students");
+                System.out.println("5. Exit");
+                System.out.print("Enter your choice: ");
+
+                choice = sc.nextInt();
+                sc.nextLine(); // consume newline
+
+                switch (choice) {
+                    case 1:
+                        addStudent(conn, sc);
+                        break;
+
+                    case 2:
+                        updateStudent(conn, sc);
+                        break;
+
+                    case 3:
+                        deleteStudent(conn, sc);
+                        break;
+
+                    case 4:
+                        viewStudents(conn);
+                        break;
+
+                    case 5:
+                        System.out.println("Exiting...");
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice!");
+                }
+
+            } while (choice != 5);
+
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
+
+        sc.close();
+    }
+
+    // Add Student
+    public static void addStudent(Connection conn, Scanner sc) {
+
+        System.out.print("Enter Student Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Grade: ");
+        String grade = sc.nextLine();
+
+        System.out.print("Enter Marks: ");
+        double marks = sc.nextDouble();
+        sc.nextLine();
+
+        String sql = "INSERT INTO student (name, grade, marks) VALUES (?, ?, ?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            conn.setAutoCommit(false);
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, grade);
+            pstmt.setDouble(3, marks);
+
+            int rows = pstmt.executeUpdate();
+
+            conn.commit();
+
+            System.out.println(rows + " student added successfully.");
+
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+                System.out.println("Transaction rolled back due to error.");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println("Error adding student: " + e.getMessage());
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Update Student
+    public static void updateStudent(Connection conn, Scanner sc) {
+
+        System.out.print("Enter Student ID to update: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter new name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter new grade: ");
+        String grade = sc.nextLine();
+
+        System.out.print("Enter new marks: ");
+        double marks = sc.nextDouble();
+        sc.nextLine();
+
+        String sql = "UPDATE student SET name=?, grade=?, marks=? WHERE id=?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            conn.setAutoCommit(false);
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, grade);
+            pstmt.setDouble(3, marks);
+            pstmt.setInt(4, id);
+
+            int rows = pstmt.executeUpdate();
+
+            conn.commit();
+
+            if (rows > 0)
+                System.out.println("Student updated successfully.");
+            else
+                System.out.println("Student ID not found.");
+
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+                System.out.println("Transaction rolled back due to error.");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println("Error updating student: " + e.getMessage());
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Delete Student
+    public static void deleteStudent(Connection conn, Scanner sc) {
+
+        System.out.print("Enter Student ID to delete: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        String sql = "DELETE FROM student WHERE id=?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            conn.setAutoCommit(false);
+
+            pstmt.setInt(1, id);
+
+            int rows = pstmt.executeUpdate();
+
+            conn.commit();
+
+            if (rows > 0)
+                System.out.println("Student deleted successfully.");
+            else
+                System.out.println("Student ID not found.");
+
+        } catch (SQLException e) {
+            try {
+                conn.rollback();
+                System.out.println("Transaction rolled back due to error.");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println("Error deleting student: " + e.getMessage());
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // View Students
+    public static void viewStudents(Connection conn) {
+
+        String sql = "SELECT * FROM student";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            System.out.println("\nID | Name | Grade | Marks");
+            System.out.println("----------------------------");
+
+            while (rs.next()) {
+                System.out.println(
+                        rs.getInt("id") + " | " +
+                        rs.getString("name") + " | " +
+                        rs.getString("grade") + " | " +
+                        rs.getDouble("marks")
+                );
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error viewing students: " + e.getMessage());
+        }
+    }
+}
