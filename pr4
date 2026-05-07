@@ -1,0 +1,97 @@
+Problem Statement: Develop a Java program that performs various operations on arrays, including displaying elements, finding the maximum and minimum elements, calculating the sum and average of elements, and searching for a specific element within the array.
+
+package oop123;
+
+import java.util.Scanner;
+
+public class ArrayOperations
+   	
+	{
+
+    public static void main(String[] args) 
+    
+    	{
+
+        Scanner sc = new Scanner(System.in);
+
+        //  array size
+        
+        System.out.print("Enter number of elements: ");
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        
+        // Input array elements
+        System.out.println("Enter array elements:");
+        for (int i = 0; i < n; i++)
+        {
+            arr[i] = sc.nextInt();
+        }
+
+        
+        // Display array 
+        
+        System.out.println("\nArray Elements:");
+        for (int i = 0; i < n; i++)
+        
+        {
+            System.out.print(arr[i] + " ");
+        }
+
+        // Initialize variables
+        int max = arr[0];
+        int min = arr[0];
+        int sum = 0;
+
+        // Find max, min and sum
+        for (int i = 0; i < n; i++) 
+        
+         {
+
+            if (arr[i] > max)
+            {
+                max = arr[i];
+            }
+
+            if (arr[i] < min)
+            {
+                min = arr[i];
+            }
+
+            sum += arr[i];
+        }
+
+        double average = (double) sum / n;
+
+        // Display results
+        
+        System.out.println("\n\nMaximum Element: " + max);
+        System.out.println("Minimum Element: " + min);
+        System.out.println("Sum of Elements: " + sum);
+        System.out.println("Average of Elements: " + average);
+
+        // Search element
+        
+        System.out.print("\nEnter element to search: ");
+        int key = sc.nextInt();
+
+        boolean found = false;
+
+        for (int i = 0; i < n; i++) 
+        {
+            if (arr[i] == key) {
+                System.out.println("Element found at index: " + i);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) 
+        {
+            System.out.println("Element not found in the array.");
+        }
+
+        sc.close();
+    }
+}
