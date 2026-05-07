@@ -1,0 +1,50 @@
+Practical 1 
+
+Problem statement: Implement a robust Java calculator program that captures user input dynamically, processes mathematical expressions using conditional logic and looping constructs, and ensures efficient error handling.
+
+package oop123;
+
+import java.util.Scanner;
+public class Calculator
+
+{
+public static void main(String[] args)
+
+{
+
+	Scanner sc = new Scanner(System.in);
+
+	int choice;
+do {
+
+System.out.println("\n1.Add 2.Subtract 3.Multiply 4.Divide 5.Exit");
+choice = sc.nextInt();
+if (choice == 5) break;
+System.out.print("Enter two numbers: ");
+double a = sc.nextDouble();
+double b = sc.nextDouble();
+
+try {
+switch (choice) {
+case 1: System.out.println("Result = " + (a + b)); break;
+case 2: System.out.println("Result = " + (a - b)); break;
+case 3: System.out.println("Result = " + (a * b)); break;
+case 4:
+if (b == 0) throw new ArithmeticException();
+System.out.println("Result = " + (a / b));
+break;
+default: System.out.println("Invalid Choice");
+
+}
+
+}
+catch (ArithmeticException e) {
+System.out.println("Error: Division by zero");
+
+}
+
+}
+while (true);
+sc.close();
+}
+}
