@@ -3,11 +3,12 @@
 Problem statement: Develop a Java program for an E-commerce order processing where some products are initialized through multiple constructors, users can input some product details manually, the system computes total order cost dynamically, applies discount policies hased on conditions, and presents a detailed invoice summarizing the purchase
 
 
+package oop12;
 
 import java.util.Scanner;
 
 // Product class
- class Product {
+class Product {
 
     int productId;
     String productName;
@@ -15,7 +16,6 @@ import java.util.Scanner;
     int quantity;
 
     // Constructor 1: Default product
-    
     Product() {
         productId = 0;
         productName = "Unknown";
@@ -24,7 +24,6 @@ import java.util.Scanner;
     }
 
     // Constructor 2: Product with basic details
-    
     Product(int productId, String productName, double price) {
         this.productId = productId;
         this.productName = productName;
@@ -45,23 +44,22 @@ import java.util.Scanner;
     }
 }
 
-// Main class
- class ECommerceOrderProcessing {
+// Main class (MAKE THIS PUBLIC)
+public class ECommerceOrderProcessing {
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-        // Predefined products using constructors
         Product p1 = new Product(101, "Laptop", 55000, 1);
         Product p2 = new Product(102, "Wireless Mouse", 1200, 2);
 
-        // User input product
+        // User input
         System.out.println("Enter Product ID:");
         int id = sc.nextInt();
 
         System.out.println("Enter Product Name:");
-        sc.nextLine();
+        sc.nextLine(); // FIX: consume newline
         String name = sc.nextLine();
 
         System.out.println("Enter Price:");
@@ -72,13 +70,11 @@ import java.util.Scanner;
 
         Product p3 = new Product(id, name, price, qty);
 
-        // Calculate total amount
         double totalAmount =
                 p1.getTotalPrice()
               + p2.getTotalPrice()
               + p3.getTotalPrice();
 
-        // Discount logic
         double discount = 0;
 
         if (totalAmount >= 100000) {
@@ -91,7 +87,7 @@ import java.util.Scanner;
 
         double finalAmount = totalAmount - discount;
 
-        // Invoice display
+        // Invoice
         System.out.println("\n========= INVOICE =========");
         displayProduct(p1);
         displayProduct(p2);
