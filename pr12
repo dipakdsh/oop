@@ -1,0 +1,188 @@
+MINI PROJECT 
+InventoryManagementSystem
+
+
+
+package jdbc123;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Product {
+    private int productId;
+    private String productName;
+    private int quantity;
+    private double pricePerUnit;
+    private int soldQuantity;
+    private double revenue;
+
+    // Constructor
+    public Product(int productId, String productName, int quantity, double pricePerUnit) {
+        this.productId = productId;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.pricePerUnit = pricePerUnit;
+        this.soldQuantity = 0;
+        this.revenue = 0;
+    }
+
+    // Display info
+    public void displayProductInfo() {
+        System.out.println("\n--- Product Info ---");
+        System.out.println("ID: " + productId);
+        System.out.println("Name: " + productName);
+        System.out.println("Stock: " + quantity);
+        System.out.println("Price: ₹" + pricePerUnit);
+        System.out.println("Sold: " + soldQuantity);
+        System.out.println("Revenue: ₹" + revenue);
+    }
+
+    // Purchase
+    public void purchase(int qty) {
+        if (qty > 0) {
+            quantity += qty;
+            System.out.println("Stock added.");
+        } else {
+            System.out.println("Invalid quantity.");
+        }
+    }
+
+    // Ship
+    public void ship(int qty) {
+        if (qty <= 0) {
+            System.out.println("Invalid quantity.");
+        } else if (qty > quantity) {
+            System.out.println("Not enough stock.");
+        } else {
+            quantity -= qty;
+            soldQuantity += qty;
+            revenue += qty * pricePerUnit;
+            System.out.println("Shipped successfully.");
+        }
+    }
+
+    // Profit/Loss
+    public void profitOrLoss(double costPerUnit) {
+        double cost = soldQuantity * costPerUnit;
+        double profit = revenue - cost;
+
+        if (profit >= 0)
+            System.out.println("Profit: ₹" + profit);
+        else
+            System.out.println("Loss: ₹" + (-profit));
+    }
+
+    public int getProductId() { return productId; }
+    public String getProductName() { return productName; }
+    public int getQuantity() { return quantity; }
+}
+
+public class InventoryManagementSystem {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        List<Product> products = new ArrayList<>();
+
+        // Add products ONCE
+        products.add(new Product(1, "Laptop", 50, 50000));
+        products.add(new Product(2, "Mobile", 100, 20000));
+        products.add(new Product(3, "Headphones", 200, 2000));
+
+        int choice;
+
+        do {
+            System.out.println("\n===== MENU =====");
+            System.out.println("1. Show Products");
+            System.out.println("2. Product Details");
+            System.out.println("3. Purchase");
+            System.out.println("4. Ship");
+            System.out.println("5. Stock");
+            System.out.println("6. Profit/Loss");
+            System.out.println("7. Exit");
+            System.out.print("Enter choice: ");
+
+            choice = sc.nextInt();
+
+            switch (choice) {
+
+                case 1:
+                    for (Product p : products) {
+                        System.out.println(p.getProductId() + " - " + p.getProductName()
+                                + " (Stock: " + p.getQuantity() + ")");
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("Enter ID: ");
+                    int id = sc.nextInt();
+                    boolean found = false;
+
+                    for (Product p : products) {
+                        if (p.getProductId() == id) {
+                            p.displayProductInfo();
+                            found = true;
+                        }
+                    }
+
+                    if (!found)
+                        System.out.println("Not found.");
+                    break;
+
+                case 3:
+                    System.out.print("Enter ID: ");
+                    id = sc.nextInt();
+                    System.out.print("Enter qty: ");
+                    int qty = sc.nextInt();
+
+                    for (Product p : products) {
+                        if (p.getProductId() == id) {
+                            p.purchase(qty);
+                        }
+                    }
+                    break;
+
+                case 4:
+                    System.out.print("Enter ID: ");
+                    id = sc.nextInt();
+                    System.out.print("Enter qty: ");
+                    qty = sc.nextInt();
+
+                    for (Product p : products) {
+                        if (p.getProductId() == id) {
+                            p.ship(qty);
+                        }
+                    }
+                    break;
+
+                case 5:
+                    for (Product p : products) {
+                        System.out.println(p.getProductName() + " = " + p.getQuantity());
+                    }
+                    break;
+
+                case 6:
+                    System.out.print("Enter ID: ");
+                    id = sc.nextInt();
+                    System.out.print("Enter cost price: ");
+                    double cost = sc.nextDouble();
+
+                    for (Product p : products) {
+                        if (p.getProductId() == id) {
+                            p.profitOrLoss(cost);
+                        }
+                    }
+                    break;
+
+                case 7:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice");
+            }
+
+        } while (choice != 7);
+
+        sc.close();
+    }
+}
