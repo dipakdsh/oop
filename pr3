@@ -1,0 +1,48 @@
+Problem statement: Write a Java program that demonstrates the overloading method to compute power and absolute of a number for various data types and utilizes the static method from Math class for the same operation
+
+
+
+
+
+
+class MathOperations { 
+	
+	static int power(int a, int b) { 
+	return (int) Math.pow(a, b); 
+	
+	} 
+	static double power(double a, double b) { 
+	return Math.pow(a, b); 
+	
+	} 
+	
+	
+	static int absolute(int a) { 
+	return Math.abs(a); 
+	} 
+	static double absolute(double a) { 
+	return Math.abs(a); 
+	} 
+	} 
+
+	public class MethodOverloadingDemo { 
+	public static void main(String[] args) { 
+
+		
+	System.out.println("Power Operations:"); 
+	System.out.println("2^3 = " + MathOperations.power(2, 3)); 
+	System.out.println("5.5^2 = " + MathOperations.power(5.5, 2)); 
+    
+	
+	System.out.println("\nAbsolute Operations:"); 
+	System.out.println("|-10| = " + MathOperations.absolute(-10)); 
+	System.out.println("|-25.75| = " + MathOperations.absolute(-25.75)); 
+	
+	
+	
+	System.out.println("\nUsing Math Class Static Methods:"); 
+	System.out.println("Math.pow(3,4) = " + Math.pow(3, 4)); 
+	System.out.println("Math.abs(-99) = " + Math.abs(-99)); 
+	System.out.println("Math.abs(-45.6) = " + Math.abs(-45.6)); 
+	} 
+	} 
