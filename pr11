@@ -1,0 +1,155 @@
+MINI PEOJECT 
+
+Banking System 
+
+
+package jdbc123;
+import java.util.Scanner;
+
+class BankAccount {
+    private String accountHolderName;
+    private String accountNumber;
+    private double balance;
+    private double dailyWithdrawalLimit = 50000;
+    private double withdrawnToday = 0;
+
+    
+    
+    public BankAccount(String name, String accNumber, double initialDeposit) {
+        this.accountHolderName = name;
+        this.accountNumber = accNumber;
+        this.balance = initialDeposit;
+        System.out.println("Account created successfully!");
+    }
+
+   
+    
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("$" + amount + " deposited successfully.");
+        } else {
+            System.out.println("Invalid deposit amount.");
+        }
+    }
+
+    // Withdraw
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            System.out.println("Invalid withdrawal amount.");
+        } else if (amount > balance) {
+            System.out.println("Insufficient balance.");
+        } else if (withdrawnToday + amount > dailyWithdrawalLimit) {
+            System.out.println("Cannot withdraw. Daily limit reached.");
+        } else {
+            balance -= amount;
+            withdrawnToday += amount;
+            System.out.println("$" + amount + " withdrawn successfully.");
+        }
+    }
+
+    // Check Balance
+    public void checkBalance() {
+        System.out.println("Current Balance: $" + balance);
+    }
+
+    // Display Info
+    public void displayInfo() {
+        System.out.println("\n----- Account Information -----");
+        System.out.println("Account Holder: " + accountHolderName);
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Balance: $" + balance);
+        System.out.println("Daily Withdrawal Limit: $" + dailyWithdrawalLimit);
+        System.out.println("Withdrawn Today: $" + withdrawnToday);
+        System.out.println("-------------------------------\n");
+    }
+}
+
+public class BankingSystemMiniProject {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        BankAccount account = null;
+
+        int choice;
+
+        do {
+            System.out.println("\n===== Banking System Menu =====");
+            System.out.println("1. Create Account");
+            System.out.println("2. Deposit Money");
+            System.out.println("3. Withdraw Money");
+            System.out.println("4. Check Balance");
+            System.out.println("5. Display Account Info");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+
+            choice = sc.nextInt();
+            sc.nextLine(); 
+
+            switch (choice) {
+
+                case 1:
+                    if (account != null) {
+                        System.out.println("Account already exists!");
+                    } else {
+                        System.out.print("Enter Name: ");
+                        String name = sc.nextLine();
+
+                        System.out.print("Enter Account Number: ");
+                        String accNumber = sc.nextLine();
+
+                        System.out.print("Enter Initial Deposit: ₹");
+                        double initialDeposit = sc.nextDouble();
+
+                        account = new BankAccount(name, accNumber, initialDeposit);
+                    }
+                    break;
+
+                case 2:
+                    if (account == null) {
+                        System.out.println("Create account first!");
+                    } else {
+                        System.out.print("Enter deposit amount: $");
+                        double depositAmount = sc.nextDouble();
+                        account.deposit(depositAmount);
+                    }
+                    break;
+
+                case 3:
+                    if (account == null) {
+                        System.out.println("Create account first!");
+                    } else {
+                        System.out.print("Enter withdraw amount: $");
+                        double withdrawAmount = sc.nextDouble();
+                        account.withdraw(withdrawAmount);
+                    }
+                    break;
+
+                case 4:
+                    if (account == null) {
+                        System.out.println("Create account first!");
+                    } else {
+                        account.checkBalance();
+                    }
+                    break;
+
+                case 5:
+                    if (account == null) {
+                        System.out.println("Create account first!");
+                    } else {
+                        account.displayInfo();
+                    }
+                    break;
+
+                case 6:
+                    System.out.println("Thank you!");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+
+        } while (choice != 6);
+
+        sc.close();
+    }
+}
