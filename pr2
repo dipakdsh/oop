@@ -1,0 +1,117 @@
+
+
+Problem statement: Develop a Java program for an E-commerce order processing where some products are initialized through multiple constructors, users can input some product details manually, the system computes total order cost dynamically, applies discount policies hased on conditions, and presents a detailed invoice summarizing the purchase
+
+
+
+import java.util.Scanner;
+
+// Product class
+ class Product {
+
+    int productId;
+    String productName;
+    double price;
+    int quantity;
+
+    // Constructor 1: Default product
+    
+    Product() {
+        productId = 0;
+        productName = "Unknown";
+        price = 0.0;
+        quantity = 0;
+    }
+
+    // Constructor 2: Product with basic details
+    
+    Product(int productId, String productName, double price) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.quantity = 1;
+    }
+
+    // Constructor 3: Product with all details
+    Product(int productId, String productName, double price, int quantity) {
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    double getTotalPrice() {
+        return price * quantity;
+    }
+}
+
+// Main class
+ class ECommerceOrderProcessing {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Predefined products using constructors
+        Product p1 = new Product(101, "Laptop", 55000, 1);
+        Product p2 = new Product(102, "Wireless Mouse", 1200, 2);
+
+        // User input product
+        System.out.println("Enter Product ID:");
+        int id = sc.nextInt();
+
+        System.out.println("Enter Product Name:");
+        sc.nextLine();
+        String name = sc.nextLine();
+
+        System.out.println("Enter Price:");
+        double price = sc.nextDouble();
+
+        System.out.println("Enter Quantity:");
+        int qty = sc.nextInt();
+
+        Product p3 = new Product(id, name, price, qty);
+
+        // Calculate total amount
+        double totalAmount =
+                p1.getTotalPrice()
+              + p2.getTotalPrice()
+              + p3.getTotalPrice();
+
+        // Discount logic
+        double discount = 0;
+
+        if (totalAmount >= 100000) {
+            discount = totalAmount * 0.15;
+        } else if (totalAmount >= 50000) {
+            discount = totalAmount * 0.10;
+        } else if (totalAmount >= 20000) {
+            discount = totalAmount * 0.05;
+        }
+
+        double finalAmount = totalAmount - discount;
+
+        // Invoice display
+        System.out.println("\n========= INVOICE =========");
+        displayProduct(p1);
+        displayProduct(p2);
+        displayProduct(p3);
+
+        System.out.println("----------------------------");
+        System.out.println("Total Amount : ₹" + totalAmount);
+        System.out.println("Discount : ₹" + discount);
+        System.out.println("Final Amount : ₹" + finalAmount);
+        System.out.println("============================");
+
+        sc.close();
+    }
+
+    static void displayProduct(Product p) {
+        System.out.println(
+                p.productId + " | " +
+                p.productName + " | " +
+                p.quantity + " | ₹" +
+                p.getTotalPrice()
+        );
+    }
+}
