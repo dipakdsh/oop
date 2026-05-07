@@ -1,0 +1,33 @@
+Problem Statement: Write a Java program to create an abstract class with an abstract method and extend it in a subclass that provides an implementation.
+
+
+abstract class Vehicle { 
+abstract void start(); 
+
+
+ void fuelType() { 
+ System.out.println("Vehicle uses fuel."); 
+
+ } 
+
+} 
+
+class Car extends Vehicle { 
+	
+	
+void start() { 
+System.out.println("Car starts with a key."); 
+} 
+} 
+
+
+public class AbstractClassDemo { 
+public static void main(String[] args) { 
+
+	
+Vehicle v = new Car(); 
+v.start();       
+
+v.fuelType();  
+} 
+} 
