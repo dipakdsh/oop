@@ -1,0 +1,124 @@
+Problem Statement: Develop a Java application that simulates an ATM machine. Implement functionalities like checking account balance, withdrawing, and depositing money. Use try, catch, and finally blocks to handle potential exceptions such as insufficient funds (throwing ArithmeticException) and invalid input (throwing IllegalArgumentException). Ensure that the application continues to run smoothly after handling exceptions.
+
+package oop123;
+
+import java.util.Scanner ;
+
+class ATM 
+{ 
+	private double balance = 10000; 
+
+void checkBalance() 
+{ 
+
+	System.out.println("Current Balance: rupees " + balance); 
+
+} 
+
+
+void deposit(double amount) 
+{ 
+	if (amount <= 0) 
+{ 
+	 throw new IllegalArgumentException("Deposit amount must be positive."); 
+} 
+balance += amount; 
+System.out.println(" rupees " + amount + " deposited successfully."); 
+ 
+} 
+
+
+void withdraw(double amount) 
+{ 
+	if (amount <= 0) 
+	{ 
+		throw new IllegalArgumentException("Withdrawal amount must be positive."); 
+    } 
+	if (amount > balance) 
+	{ 
+		throw new ArithmeticException("Insufficient funds."); 
+}
+
+balance -= amount ;
+System.out.println ("rupees"+amount + " withdrawn successfully ");
+}	
+}
+
+public class ATMSimulator 
+{
+	public static void main (String [] args )  {
+		Scanner sc = new Scanner (System.in);
+		ATM atm = new ATM();
+		int choice ;
+		
+		
+		
+	do {
+		
+	System.out.println("\n------ ATM MENU ------"); 
+	System.out.println("1. Check Balance"); 
+	System.out.println("2. Deposit Money"); 
+	System.out.println("3. Withdraw Money"); 
+	System.out.println("4. Exit"); 
+	System.out.print("Enter your choice: "); 
+	try { 
+	
+	choice = sc.nextInt(); 
+	switch (choice) { 
+	case 1: 
+	atm.checkBalance(); 
+	break; 
+	case 2: 
+	System.out.print("Enter deposit amount: "); 
+	double depositAmount = sc.nextDouble(); 
+	atm.deposit(depositAmount);
+
+		
+		
+	break; 
+		 
+    case 3: 
+    
+    	System.out.print("Enter withdrawal amount: "); 
+        double withdrawAmount = sc.nextDouble(); 
+        atm.withdraw(withdrawAmount); 
+       break; 
+
+        case 4: 
+ 
+        System.out.println("Thank you for using ATM."); 
+        break; 
+
+        default: 
+      
+        	throw new IllegalArgumentException("Invalid menu choice."); 
+    } 
+
+}
+	catch (ArithmeticException e) 
+	{ 
+    System.out.println("Error: " + e.getMessage()); 
+
+    }
+	
+	catch (IllegalArgumentException e) 
+	{ 
+    System.out.println("Error: " + e.getMessage()); 
+
+} 
+	catch (Exception e) 
+	{ 
+    System.out.println("Error: Invalid input. Please enter numbers only."); 
+    sc.next(); // Clear invalid input 
+
+}
+	finally
+	{ 
+    System.out.println("Transaction completed.\n"); 
+} 
+
+}
+	while (true); 
+
+	 	 	}
+}
