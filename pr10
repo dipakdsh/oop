@@ -3,7 +3,7 @@
 Problem Statement:Develop a Java application that connects to a MySQL/PostgreSQL. database to manage student information. Implement CRUD operations for student records using JDBC. Use prepared statements to handle SQL queries securely and ensure proper transaction management.
 
 
-package jdbc123;
+package oops;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -11,8 +11,8 @@ public class StudentManagement {
 
     // Database connection details
     static final String DB_URL = "jdbc:mysql://localhost:3306/school_db";
-    static final String USER = "root";      // your DB username
-    static final String PASS = "Pass";  // your DB password
+    static final String USER = "root";      // your DB User name
+    static final String PASS = "";  // your DB password
 
     public static void main(String[] args) {
 
@@ -40,23 +40,18 @@ public class StudentManagement {
                     case 1:
                         addStudent(conn, sc);
                         break;
-
                     case 2:
                         updateStudent(conn, sc);
                         break;
-
                     case 3:
                         deleteStudent(conn, sc);
                         break;
-
                     case 4:
                         viewStudents(conn);
                         break;
-
                     case 5:
                         System.out.println("Exiting...");
                         break;
-
                     default:
                         System.out.println("Invalid choice!");
                 }
@@ -94,7 +89,6 @@ public class StudentManagement {
             pstmt.setDouble(3, marks);
 
             int rows = pstmt.executeUpdate();
-
             conn.commit();
 
             System.out.println(rows + " student added successfully.");
@@ -107,6 +101,7 @@ public class StudentManagement {
                 ex.printStackTrace();
             }
             System.out.println("Error adding student: " + e.getMessage());
+
         } finally {
             try {
                 conn.setAutoCommit(true);
@@ -145,7 +140,6 @@ public class StudentManagement {
             pstmt.setInt(4, id);
 
             int rows = pstmt.executeUpdate();
-
             conn.commit();
 
             if (rows > 0)
@@ -161,6 +155,7 @@ public class StudentManagement {
                 ex.printStackTrace();
             }
             System.out.println("Error updating student: " + e.getMessage());
+
         } finally {
             try {
                 conn.setAutoCommit(true);
@@ -184,9 +179,7 @@ public class StudentManagement {
             conn.setAutoCommit(false);
 
             pstmt.setInt(1, id);
-
             int rows = pstmt.executeUpdate();
-
             conn.commit();
 
             if (rows > 0)
@@ -202,6 +195,7 @@ public class StudentManagement {
                 ex.printStackTrace();
             }
             System.out.println("Error deleting student: " + e.getMessage());
+
         } finally {
             try {
                 conn.setAutoCommit(true);
@@ -236,3 +230,17 @@ public class StudentManagement {
         }
     }
 }
+
+
+
+
+CREATE DATABASE school_db;
+
+USE school_db;
+
+CREATE TABLE student (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    grade VARCHAR(20),
+    marks DOUBLE
+);
